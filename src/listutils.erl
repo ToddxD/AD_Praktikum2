@@ -8,6 +8,7 @@
 %% API
 -export([reverse/1,len/1]).
 
+%-author("Tim")
 reverse(L)-> reverse(L, []).
 reverse([], Akku) -> Akku;
 reverse([H|T], Akku) -> reverse(T, [H| Akku]).

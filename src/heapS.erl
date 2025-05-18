@@ -1,32 +1,30 @@
 %%%-------------------------------------------------------------------
-%%% @author Tim Meyerfeldt
-%%% @doc Implementierung eines Heapsorts anhand des Entwurfs.
+%%% @author Hendrik
+%%% @copyright (C) 2025, <COMPANY>
+%%% @doc
+%%%
+%%% @end
+%%% Created : 10. Mai 2025 10:01
 %%%-------------------------------------------------------------------
 -module(heapS).
--author("Tim").
+-author("Hendrik").
 
 %% API
--export([removeLast/2, heapS/3,swap/2, heapS/1,calcPath/1, reverse/1, getLaenge/2, compare/2, getLastPos/1,  goDownPath/3, buildTree/1, buildTree/3, getFromPath/2, seepDown/1]).
+-export([heapS/1]).
 
 %%-----------------------------------------------------------------
 % Heapsort
+heapS([]) -> [];
 heapS(Liste) -> heapS([], getLaenge(Liste, 0), buildTree(Liste)).
-heapS(ResultListe, 1, Tree)->[getValue(Tree)|ResultListe];
-heapS(ResultListe, P, Tree)-> heapS([getValue(Tree)|ResultListe], (P-1), seepDown(removeLast(calcPath(P), swap(Tree, getFromPath(calcPath(P), Tree))))).
-
-reverse(L)-> reverse(L, []).
-reverse([], Akku) -> Akku;
-reverse([H|T], Akku) -> reverse(T, [H| Akku]).
+heapS(ResultListe, 1, {EL, _PL, _PR})->[EL|ResultListe];
+heapS(ResultListe, P, {EL, PL, PR}) ->
+  %{Tree, NEWROOT} = {4, 6},
+  heapS([EL|ResultListe], (P-1), seepDown(removeLast(calcPath(P), {EL, PL, PR}))).
 
 getLaenge([], L) -> L;
 getLaenge([_H|T], L) -> getLaenge(T, (L+1)).
 
-compare(E, [H|_T]) -> (E >= H).
-
-getLastPos([])-> [];
-getLastPos([H|_T])-> H == l.
-
-getValue({N, _PL, _PR}) -> N.
+%%getValue({N, _PL, _PR}) -> N.
 
 getFromPath([],{N, _PL, _PR}) -> N;
 getFromPath([H|T],{_N, PL, _PR})when H == l ->getFromPath(T, PL);
@@ -54,6 +52,7 @@ seepDown({E, PL, {ER, PERL, PERR}})->
       false->{E, PL, {ER, PERL, PERR}}
     end.
 
+%Hilfsfunktion zum Erstellen, des Baumes, durchlaufen des Baumes, entsprechend des Errechneten Pfades und Anhängen eines Knotens
 goDownPath([],{{},PL,PR},E) -> {E, PL, PR};
 goDownPath([H|[]],{N,PL,PR},E) when E > N -> goDownPath([H|[]], {E, PL, PR}, N);
 goDownPath([H|[]],{N,PL,_PR},E) ->
@@ -72,11 +71,12 @@ buildTree([H|T])-> buildTree(T, 2, goDownPath(calcPath(1), {{}, {}, {}}, H)).
 buildTree([H|[]], P, TREE)-> goDownPath(calcPath(P), TREE, H);
 buildTree([H|T], P, TREE)-> buildTree(T, (P+1), goDownPath(calcPath(P), TREE, H)).
 
+%Hilsfunktion zum Tauschen des Wertes des Ersten Knotens
 swap({_E, PL, PR}, N) -> {N, PL, PR}.
 
 removeLast([],{_N, _PL, _PR}) -> {};
-removeLast([H|T],{N, PL, PR})when H == l ->{N, removeLast(T, PL), PR};
-removeLast([_H|T],{N, PL, PR})->{N, PL, removeLast(T, PR)}.
+removeLast([H|T],{N, {M, _PELL, _PELR}, PR})when H == l ->{M, removeLast(T, {N, _PELL, _PELR}), PR};
+removeLast([_H|T],{N, PL, {M, _PERL, _PERR}})->{M, PL, removeLast(T, {N, _PERL, _PERR})}.
 
 % Kodierung des Feldes: Nachfolger von Position i ist 2*i links und 2*i+1 rechts
 % berechnet den Pfad zur ersten leeren Position

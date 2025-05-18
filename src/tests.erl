@@ -14,12 +14,12 @@ testInsertHeap()->
     zeitinsertionS:messung(10,100,100,10,rand).
 
 testAlle() ->
-    Switch = 3,
+    Switch = 0,
     io:format("alle im vergleich"),
-    zeitheapS:messung(100,10000,20,3,rand),
-    zeitradixS:messung(100,10000,20,3,rand),
-    %%zeitinsertionS:messung(100,10000,3,3,rand),
-    zeitintroS:messung(100,10000,20,3,rand,left,Switch).
+    zeitheapS:messung(100,20000,20,3,rand),
+    zeitradixS:messung(100,20000,20,3,rand),
+    zeitintroS:messung(100,20000,20,3,rand,left,Switch),
+    zeitinsertionS:messung(100,5000,10,3,rand).
 
 
 testHeap() ->
@@ -35,14 +35,18 @@ testRadix() ->
     zeitradixS:messung(100,100000,15,3,ab).
 
 testIntro() ->
-    Switch = 3,
+    Switch = 0,
     io:format("intro, random"),
-    zeitintroS:messung(100,100000,10,3,rand,left,Switch),
-    zeitintroS:messung(100,100000,10,3,rand,right,Switch),
-    zeitintroS:messung(100,100000,10,3,rand,middle,Switch),
-    zeitintroS:messung(100,100000,10,3,rand,median,Switch),
-    zeitintroS:messung(100,100000,10,3,rand,random,Switch),
+    %%zeitintroS:messung(100,100000,10,3,rand,left,Switch),
+    %%zeitintroS:messung(100,100000,10,3,rand,right,Switch),
+    %%zeitintroS:messung(100,100000,10,3,rand,middle,Switch),
+    %%zeitintroS:messung(100,100000,10,3,rand,median,Switch),
+    %%zeitintroS:messung(100,100000,10,3,rand,random,Switch),
     io:format("intro, auf"),
+
+
+
+
     zeitintroS:messung(100,100000,10,3,auf,left,Switch),
     zeitintroS:messung(100,100000,10,3,auf,right,Switch),
     zeitintroS:messung(100,100000,10,3,auf,middle,Switch),

@@ -15,10 +15,10 @@ introS(_PivotMethode, [], _SwitchNum, _MaxDepth) -> [];
 introS(PivotMethode, Liste, SwitchNum, MaxDepth) ->
     %              (1)
     case listutils:len(Liste) < SwitchNum of
-        true -> insertionS:insertionS(Liste); % (2) Insertionsort
-        false -> case MaxDepth of
-                     0 -> heapS:heapS(Liste); % (3)/(4) Heapsort
-                     _ -> Pivot = pivot(Liste, PivotMethode), % Quicksort
+        true -> [];%insertionS:insertionS(Liste); % (2) Da der Insertionsort nicht besser als der Heapsort ist, wird dieser nicht ausgeführt
+        false -> case MaxDepth =< 0 of % Anders als im Entwurf muss hier auf =< geprüft werden, da die MaxDepth durch die Berechnung keine Ganzzahl ist.
+                     true -> heapS:heapS(Liste); % (3)/(4) Heapsort
+                     false -> Pivot = pivot(Liste, PivotMethode), % Quicksort
                          %                       (6)
                          {ListeL,ListeM,ListeR} = quickSplit(Pivot, Liste, [], [], []),
                          % (7)                                                             (8)
@@ -44,7 +44,7 @@ pivot([_H|T], right) -> pivot(T, right);
 pivot(Liste, median) ->
     (pivot(Liste, left) + pivot(Liste, middle) + pivot(Liste, right)) / 3;
 
-pivot(Liste, random) -> pivot(Liste, random, rand:uniform(length(Liste)) - 1);
+pivot(Liste, random) -> pivot(Liste, random, rand:uniform(listutils:len(Liste)) - 1);
 
 pivot(Liste, middle) -> pivot(Liste, middle, (listutils:len(Liste) / 2)).
 
