@@ -11,6 +11,7 @@
 %% Pivot_methode: left, middle, right, median, random
 introS(PivotMethode, Liste, SwitchNum) -> introS(PivotMethode, Liste, SwitchNum, 2 * math:log2(listutils:len(Liste))).
 
+introS(_PivotMethode, [], _SwitchNum, _MaxDepth) -> [];
 introS(PivotMethode, Liste, SwitchNum, MaxDepth) ->
     %              (1)
     case listutils:len(Liste) < SwitchNum of
